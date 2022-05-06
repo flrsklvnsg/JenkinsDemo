@@ -1,6 +1,10 @@
 pipeline {
     agent any
-
+    parameters{
+        string(name: 'VERSION', defaultValue: '', description: 'version to deploy on prod')
+        choice(name: 'VERSION', choices: ['1.1.0','1.2.0','1.3.0'], description: '')
+        booleanParam(name: 'executeTests', defaultValue: true, description: '')
+    }
     stages {
         stage('Test Hello') {
             steps {
@@ -8,31 +12,26 @@ pipeline {
             }
         }
         stage('Build') {
-             when{
-                    expression{
-                        BRANCH_NAME == 'dev' && CODE_CHANGES == true
-                    }
-                }
             steps {
-                echo 'Building' 
-           //     sh 'npm install'
-            //    sh 'npm build'
+                echo'Building' 
+
             }
         }
             stage('Test') {
+            steps {
                 when{
                     expression{
-                        BRANCH_NAME == 'dev' || BRANCH_NAME =='master'
+                        params.executeTests
                     }
                 }
-            steps {
                 echo 'Testing'
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying'
-            }
+                echo 'Deploying'   
+                echo "deploying version ${params.VERSION}"
+                }
         }
         stage('Release') {
             steps {
@@ -51,20 +50,6 @@ pipeline {
                 echo 'Cleanup'
             }
        
-        }
-        post
-        {
-            always{
-
-            }
-            success{
-
-            
-            
-            }
-            failures{
-                
-            }
         }
     }
 }
