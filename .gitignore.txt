@@ -1,0 +1,2 @@
+# contents of the .gitignore file
+social-security.txt

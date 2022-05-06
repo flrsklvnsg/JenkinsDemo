@@ -10,6 +10,13 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building'
+           //     sh 'npm install'
+            //    sh 'npm build'
+            }
+        }
+            stage('Test') {
+            steps {
+                echo 'Testing'
             }
         }
         stage('Deploy') {
@@ -17,14 +24,21 @@ pipeline {
                 echo 'Deploying'
             }
         }
-        stage('Test') {
-            steps {
-                echo 'Testing'
-            }
-        }
         stage('Release') {
             steps {
                 echo 'Releasing'
+            }
+       
+        }
+        stage('Checkout') {
+            steps {
+                echo 'Checkout'
+            }
+       
+        }
+        stage('Cleanup') {
+            steps {
+                echo 'Cleanup'
             }
        
         }
