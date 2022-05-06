@@ -1,6 +1,7 @@
 CODE_CHANGES=getGitChanges()
 pipeline {
     agent any
+
     stages {
         stage('Test Hello') {
             steps {
@@ -8,19 +9,31 @@ pipeline {
             }
         }
         stage('Build') {
+             when{
+                    expression{
+                        BRANCH_NAME == 'dev' && CODE_CHANGES == true
+                    }
+                }
             steps {
-                echo "Building" 
+                echo 'Building' 
+           //     sh 'npm install'
+            //    sh 'npm build'
             }
         }
             stage('Test') {
+                when{
+                    expression{
+                        BRANCH_NAME == 'dev' || BRANCH_NAME =='master'
+                    }
+                }
             steps {
                 echo 'Testing'
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying'        
-                }
+                echo 'Deploying'
+            }
         }
         stage('Release') {
             steps {
@@ -39,6 +52,20 @@ pipeline {
                 echo 'Cleanup'
             }
        
+        }
+        post
+        {
+            always{
+
+            }
+            success{
+
+            
+            
+            }
+            failures{
+                
+            }
         }
     }
 }
